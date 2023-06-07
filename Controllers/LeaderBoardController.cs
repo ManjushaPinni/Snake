@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Snake.Models;
 using Snake.Services;
 
@@ -8,7 +9,7 @@ namespace Snake.Controllers
     [Route("LeaderBoard")]
     public class LeaderBoardController : ControllerBase
     {
-        private readonly LeaderBoardRecords LeaderBoardData = new LeaderBoardRecords();
+        private LeaderBoardRecords leaderBoardRecords = new LeaderBoardRecords();
 
         private readonly ILogger<LeaderBoardController> _logger;
         private readonly ILeaderBoardService _leaderBoardService;
@@ -20,13 +21,23 @@ namespace Snake.Controllers
         }
 
         [HttpGet("/GetRecords")]
-        public IActionResult GetRecords() { return Ok(); }
+        public IActionResult GetRecords() 
+        { 
+            return Ok(JsonConvert.SerializeObject(leaderBoardRecords)); 
+        }
 
         [HttpGet("/GetOrderedRecords")]
-        public IActionResult GetOrderdRecords() { return Ok(); }
-
+        public IActionResult GetOrderdRecords() 
+        {
+            LeaderBoardRecords sortedLeaderBoardRecords = _leaderBoardService.GetOrderedRecords(ref leaderBoardRecords) ;
+            return Ok(JsonConvert.SerializeObject(sortedLeaderBoardRecords));
+        }
 
         [HttpPost("/AddScore")]
-        public IActionResult AddScore(ref LeaderBoardRecords leaderBoardRecords, [FromBody] Record record) { return Ok(); }
+        public IActionResult AddScore(ref LeaderBoardRecords leaderBoardRecords, [FromBody] Record record)
+        {
+            int recordRank = _leaderBoardService.AddRecord(ref leaderBoardRecords, record);
+            return Ok(JsonConvert.SerializeObject(recordRank));
+        }
     }
 }
