@@ -34,7 +34,7 @@ namespace Snake.Controllers
         }
 
         [HttpPost("/AddScore")]
-        public IActionResult AddScore(ref LeaderBoardRecords leaderBoardRecords, [FromBody] Record record)
+        public IActionResult AddScore([FromBody] Record record)
         {
             int recordRank = _leaderBoardService.AddRecord(ref leaderBoardRecords, record);
             return Ok(JsonConvert.SerializeObject(recordRank));
