@@ -1,6 +1,10 @@
 ﻿namespace Snake.Models
 {
-    public class LeaderBoard
+    public class LeaderBoardRecords
+    {
+        public List<Record> ScoresList {  get; set; }
+    }
+    public class Record
     {
         public string UserName { get; set; }
 

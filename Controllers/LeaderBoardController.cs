@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Snake.Models;
 using Snake.Services;
 
 namespace Snake.Controllers
@@ -7,6 +8,8 @@ namespace Snake.Controllers
     [Route("LeaderBoard")]
     public class LeaderBoardController : ControllerBase
     {
+        private readonly LeaderBoardRecords LeaderBoardData = new LeaderBoardRecords();
+
         private readonly ILogger<LeaderBoardController> _logger;
         private readonly ILeaderBoardService _leaderBoardService;
 
@@ -16,14 +19,14 @@ namespace Snake.Controllers
             _leaderBoardService = leaderBoardService;
         }
 
-        [HttpGet("/GetScores")]
-        public IActionResult GetScores() { return Ok(); }
+        [HttpGet("/GetRecords")]
+        public IActionResult GetRecords() { return Ok(); }
 
-        [HttpGet("/GetOrderedScores")]
-        public IActionResult GetOrderdScores() { return Ok(); }
+        [HttpGet("/GetOrderedRecords")]
+        public IActionResult GetOrderdRecords() { return Ok(); }
 
 
         [HttpPost("/AddScore")]
-        public IActionResult AddScore() { return Ok(); }
+        public IActionResult AddScore(ref LeaderBoardRecords leaderBoardRecords, [FromBody] Record record) { return Ok(); }
     }
 }

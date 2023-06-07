@@ -4,16 +4,17 @@ namespace Snake.Services
 {
     public interface ILeaderBoardService
     {
-        List<LeaderBoard> GetScores();
-        List<LeaderBoard> GetOrderedScores();
+        LeaderBoardRecords GetRecords();
+        LeaderBoardRecords GetOrderedRecords();
+        void AddRecord(ref LeaderBoardRecords leaderBoardRecords, Record record);
     }
 
     public class LeaderBoardService : ILeaderBoardService
     {
-        public List<LeaderBoard> GetScores() { return new List<LeaderBoard>(); }
+        public LeaderBoardRecords GetRecords() { return new LeaderBoardRecords(); }
 
-        public List<LeaderBoard> GetOrderedScores() { return new List<LeaderBoard>(); }
+        public LeaderBoardRecords GetOrderedRecords() { return new LeaderBoardRecords(); }
 
-        public void AddScore() {  }
+        public void AddRecord(ref LeaderBoardRecords leaderBoardRecords, Record record) { }
     }
 }
