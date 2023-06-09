@@ -5,11 +5,11 @@ using Snake.Services;
 
 namespace Snake.Controllers
 {
-    [ApiController]
     [Route("LeaderBoard")]
-    public class LeaderBoardController : ControllerBase
+    [ApiController]
+    public class LeaderBoardController : Controller
     {
-        private LeaderBoardRecords leaderBoardRecords = new LeaderBoardRecords();
+        private static LeaderBoardRecords leaderBoardRecords = new LeaderBoardRecords();
 
         private readonly ILogger<LeaderBoardController> _logger;
         private readonly ILeaderBoardService _leaderBoardService;
@@ -20,20 +20,20 @@ namespace Snake.Controllers
             _leaderBoardService = leaderBoardService;
         }
 
-        [HttpGet("/GetRecords")]
+        [HttpGet("GetRecords")]
         public IActionResult GetRecords() 
         { 
             return Ok(JsonConvert.SerializeObject(leaderBoardRecords)); 
         }
 
-        [HttpGet("/GetOrderedRecords")]
+        [HttpGet("GetOrderedRecords")]
         public IActionResult GetOrderdRecords() 
         {
             LeaderBoardRecords sortedLeaderBoardRecords = _leaderBoardService.GetOrderedRecords(ref leaderBoardRecords) ;
             return Ok(JsonConvert.SerializeObject(sortedLeaderBoardRecords));
         }
 
-        [HttpPost("/AddScore")]
+        [HttpPost("AddScore")]
         public IActionResult AddScore([FromBody] Record record)
         {
             int recordRank = _leaderBoardService.AddRecord(ref leaderBoardRecords, record);

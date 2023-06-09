@@ -16,7 +16,8 @@ namespace Snake.Services
         public LeaderBoardRecords GetOrderedRecords(ref LeaderBoardRecords leaderBoardRecords) 
         {
             LeaderBoardRecords sortedLeaderBoardRecords = new LeaderBoardRecords();
-            sortedLeaderBoardRecords.RecordsList = leaderBoardRecords.RecordsList.OrderByDescending(o => o.Score).ToList();
+            if (leaderBoardRecords.RecordsList.Any())
+                sortedLeaderBoardRecords.RecordsList = leaderBoardRecords.RecordsList.OrderByDescending(o => o.Score).ToList();
 
             return sortedLeaderBoardRecords; 
         }
@@ -24,8 +25,10 @@ namespace Snake.Services
         public int AddRecord(ref LeaderBoardRecords leaderBoardRecords, Record record) 
         {
             string recordId = GetRecordIdByUserName(ref leaderBoardRecords, record);
+            record.Id = recordId;
+
             if (!string.IsNullOrEmpty(recordId))
-                UpdateExistingRecord(ref leaderBoardRecords, record);
+                UpdateExistingRecord(ref leaderBoardRecords, record); 
             else
                 recordId = AddNewRecord(ref leaderBoardRecords, record);
 
@@ -54,7 +57,9 @@ namespace Snake.Services
 
         private string GetRecordIdByUserName(ref LeaderBoardRecords leaderBoardRecords, Record record)
         {
-            return leaderBoardRecords.RecordsList.FirstOrDefault(o => o.UserName.Equals(record.UserName)).Id;
+            var check = leaderBoardRecords.RecordsList.Any();
+
+            return leaderBoardRecords.RecordsList.Any() ? leaderBoardRecords?.RecordsList?.FirstOrDefault(o => o.UserName.Equals(record.UserName, StringComparison.OrdinalIgnoreCase))?.Id : "";
         }
 
         private int GetRecordRank(ref LeaderBoardRecords leaderBoardRecords, string recordId)
